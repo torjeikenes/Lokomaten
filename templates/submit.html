@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.navn.label }}<br>
+        {{ form.navn(size=32) }}
+    </p>
+    <p>
+        {{ form.forklaring.label }}<br>
+        {{ form.forklaring(size=32) }}
+    </p>
+      <p>
+        {{ form.lokstreker.label }}<br>
+        {{ form.lokstreker }}
+    </p>
+    <p>
+        {{ form.dato.label }}<br>
+        {{ form.dato }}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+
+{% endblock %}

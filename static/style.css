@@ -1,0 +1,58 @@
+body {
+  /*padding-left: 200px;
+  padding-right: 200px;*/
+  font-family: 'Roboto', sans-serif;
+  color: #404040;
+  background-color: #eee;
+  text-align: center;
+ }
+
+.container {
+  width: 520px;
+  margin-top: 20px;
+  margin: auto;
+}
+
+.info {
+  text-align: left;
+}
+
+.form input{
+  color: black;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+.answer {
+  padding: 15px
+}
+
+input {
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; 
+  border-radius: 4px;
+}
+
+ul#lokstreker li {
+  display:inline;
+}
+
+input.ja {
+  background-color: #4CAF50; /* Green */
+}
+
+input.nei {
+  background-color: #E53935; /* Red */
+}
+
