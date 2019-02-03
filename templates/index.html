@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h3>Ukas Løk</h3>
+
+<table id="ukas" class="center">
+  <tr>
+    <th>Navn</th>
+    <th>Ukas Løkstreker</th>
+  </tr>
+
+{% for n in ukas %}
+<tr>
+  <td>{{ n }}</th> 
+  <td>{{ ukas[n] }}</th> 
+</tr>
+{% endfor %}
+</table>
+
+<h3>Forrige ukes løker</h3>
+
+<table id="past" class="center">
+  <tr>
+    <th>Uke</th>
+    <th>Løk</th>
+  </tr>
+
+{% for u in past %}
+<tr>
+  <td><a href="/uke/{{ u }}">{{ u }}</a></th> 
+  <td>{{ past[u] }}</th> 
+</tr>
+{% endfor %}
+</table>
+
+<h3>Totalt</h3>
+
+<table id="totalt" class="center">
+  <tr>
+    <th>Navn</th>
+    <th>Totale Løkstreker</th>
+  </tr>
+
+{% for n in total %}
+
+<tr>
+  <td>{{ n }}</th> 
+  <td>{{ total[n] }}</th> 
+</tr>
+
+{% endfor %}
+
+</table>
+
+<h3>Løkstreker</h3>
+<table id="alt" class="center" >
+  <tr>
+    <th>Navn</th>
+    <th>Løkstreker</th>
+    <th>forklaring</th>
+    <th>Dato</th>
+  </tr>
+{% for line in data %}
+<tr>
+  <td>{{ line['navn'] }}</th> 
+  <td>{{ line['antall'] }}</th> 
+  <td>{{ line['forklaring'] }}</th>
+  <td>{{ line['dato'] }}</th> 
+</tr>
+
+{% endfor %}
+</table>
+
+{% endblock %}
