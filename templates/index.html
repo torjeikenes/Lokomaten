@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+<h2><a href="/submit">Send inn løkstrek</a></h2>
 
 <h3>Ukas Løk</h3>
 
@@ -11,8 +12,8 @@
 
 {% for n in ukas %}
 <tr>
-  <td>{{ n }}</th> 
-  <td>{{ ukas[n] }}</th> 
+  <td>{{ n }}</th>
+  <td>{{ ukas[n] }}</th>
 </tr>
 {% endfor %}
 </table>
@@ -27,13 +28,13 @@
 
 {% for u in past %}
 <tr>
-  <td><a href="/uke/{{ u }}">{{ u }}</a></th> 
-  <td>{{ past[u] }}</th> 
+  <td><a href="/uke/{{ u }}">{{ u }}</a></th>
+  <td>{{ past[u] }}</th>
 </tr>
 {% endfor %}
 </table>
 
-<h3>Totalt</h3>
+<h3>Totale løkstreker</h3>
 
 <table id="totalt" class="center">
   <tr>
@@ -44,8 +45,8 @@
 {% for n in total %}
 
 <tr>
-  <td>{{ n }}</th> 
-  <td>{{ total[n] }}</th> 
+  <td>{{ n }}</th>
+  <td>{{ total[n] }}</th>
 </tr>
 
 {% endfor %}
@@ -60,12 +61,12 @@
     <th>forklaring</th>
     <th>Dato</th>
   </tr>
-{% for line in data %}
+{% for line in r %}
 <tr>
-  <td>{{ line['navn'] }}</th> 
-  <td>{{ line['antall'] }}</th> 
+  <td>{{ line['navn'] }}</th>
+  <td>{{ line['antall'] }}</th>
   <td>{{ line['forklaring'] }}</th>
-  <td>{{ line['dato'] }}</th> 
+  <td>{{ line['dato'] }}</th>
 </tr>
 
 {% endfor %}

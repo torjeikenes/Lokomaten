@@ -5,9 +5,11 @@ import csv
 import datetime
 import operator
 
+svarfil = '/home/lokomaten/mysite/svar.csv'
+
 def pastWeeks(d, uke):
     weeks = {}
-    for i in range(4, uke+1):
+    for i in range(5, uke):
         ukas = ukasLok(d,i)
         #lok = max(ukas.items(), key=operator.itemgetter(1))[0]
         lok = max(ukas, key=lambda k: ukas[k])
@@ -24,6 +26,7 @@ def ukasLok(d, week):
                 ukas[i['navn']] += int(i['antall'])
             else:
                 ukas[i['navn']] = int(i['antall'])
+
     return ukas
 
 def ukasStreker(d, week):
@@ -52,7 +55,7 @@ def findTotal(d):
 
 
 def writeToFile(navn,antall,forkl,dato):
-    with open('svar.csv', mode='a') as lok_file:
+    with open(svarfil, mode='a') as lok_file:
         fieldnames = ['navn', 'antall', 'forklaring', 'dato']
         lok_writer = csv.DictWriter(lok_file, fieldnames=fieldnames)
         row = {'navn': navn, 'antall': antall,'forklaring': forkl,'dato': dato}
@@ -66,18 +69,18 @@ app.config['SECRET_KEY'] = 'hemmelig'
 
 @app.route('/')
 def index():
-    data = readFile('svar.csv')
+    data = readFile(svarfil)
     total = findTotal(data)
     thisWeek = int(datetime.datetime.now().strftime("%V"))
     ukas = ukasLok(data, thisWeek)
     past = pastWeeks(data, thisWeek)
-    return render_template('index.html', data=data, total=total, ukas=ukas, past=past)
+    return render_template('index.html', r=reversed(data), data=data, total=total, ukas=ukas, past=past)
 
 @app.route('/uke/<ukeNr>')
 def uke(ukeNr):
-    data = readFile('svar.csv')
+    data = readFile(svarfil)
     ukas = ukasLok(data, int(ukeNr))
-    streker = ukasStreker(data, int(ukeNr))
+    streker = reversed(ukasStreker(data, int(ukeNr)))
     return render_template('uke.html',ukas=ukas, ukeNr=ukeNr, streker=streker)
 
 @app.route('/submit', methods=['GET', 'POST'])
@@ -90,6 +93,7 @@ def submit():
         lokstreker = form.lokstreker.data
         dato = form.dato.data
         writeToFile(navn,lokstreker,forklaring,dato)
+        return redirect('/')
 
     return render_template('submit.html', form=form)
 
