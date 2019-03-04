@@ -4,16 +4,23 @@ import sys
 import csv
 import datetime
 import operator
+import os
 
-svarfil = '/home/lokomaten/mysite/svar.csv'
+path = '/home/lokomaten/mysite/svar.csv'
+path = '/home/torje/github/lokomat/troops/'
 
 def pastWeeks(d, uke):
     weeks = {}
-    for i in range(5, uke):
+    for i in range(1, uke):
         ukas = ukasLok(d,i)
         #lok = max(ukas.items(), key=operator.itemgetter(1))[0]
-        lok = max(ukas, key=lambda k: ukas[k])
-        weeks[i] = lok
+        try:
+            lok = max(ukas, key=lambda k: ukas[k])
+            weeks[i] = lok
+        except ValueError:
+                print("No submissions", file=sys.stdout)
+
+        #weeks[i] = lok
 
     return weeks
 
@@ -49,13 +56,12 @@ def findTotal(d):
     for i in d:
         if i['navn'] in total:
             total[i['navn']] += int(i['antall'])
-        else:
-            total[i['navn']] = int(i['antall'])
+        total[i['navn']] = int(i['antall'])
     return total
 
 
-def writeToFile(navn,antall,forkl,dato):
-    with open(svarfil, mode='a') as lok_file:
+def writeToFile(tropp, navn,antall,forkl,dato):
+    with open(path+tropp+'.csv', mode='a') as lok_file:
         fieldnames = ['navn', 'antall', 'forklaring', 'dato']
         lok_writer = csv.DictWriter(lok_file, fieldnames=fieldnames)
         row = {'navn': navn, 'antall': antall,'forklaring': forkl,'dato': dato}
@@ -63,28 +69,41 @@ def writeToFile(navn,antall,forkl,dato):
         lok_writer.writerow(row)
     lok_file.close()
 
+def findTroops():
+    troops = []
+    for file in os.listdir(path):
+        troops.append(os.path.splitext(file)[0])
+    print(troops, file=sys.stdout)
+    return troops
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hemmelig'
 
+
 @app.route('/')
 def index():
-    data = readFile(svarfil)
+    troops = findTroops()
+    return render_template('start.html', troops=troops)
+
+@app.route('/<tropp>')
+def tropp(tropp):
+    data = readFile(path+tropp+'.csv')
     total = findTotal(data)
     thisWeek = int(datetime.datetime.now().strftime("%V"))
     ukas = ukasLok(data, thisWeek)
     past = pastWeeks(data, thisWeek)
-    return render_template('index.html', r=reversed(data), data=data, total=total, ukas=ukas, past=past)
+    return render_template('index.html', r=reversed(data), data=data, total=total, ukas=ukas, past=past, tropp=tropp)
 
-@app.route('/uke/<ukeNr>')
-def uke(ukeNr):
-    data = readFile(svarfil)
+@app.route('/<tropp>/uke/<ukeNr>')
+def uke(tropp, ukeNr):
+    data = readFile(path+tropp+'.csv')
     ukas = ukasLok(data, int(ukeNr))
     streker = reversed(ukasStreker(data, int(ukeNr)))
     return render_template('uke.html',ukas=ukas, ukeNr=ukeNr, streker=streker)
 
-@app.route('/submit', methods=['GET', 'POST'])
-def submit():
+@app.route('/<tropp>/submit', methods=['GET', 'POST'])
+def submit(tropp):
     form = LokForm()
     #if form.validate_on_submit():
     if request.method == 'POST':
@@ -92,8 +111,8 @@ def submit():
         forklaring = form.forklaring.data
         lokstreker = form.lokstreker.data
         dato = form.dato.data
-        writeToFile(navn,lokstreker,forklaring,dato)
-        return redirect('/')
+        writeToFile(tropp,navn,lokstreker,forklaring,dato)
+        return redirect('/'+tropp)
 
     return render_template('submit.html', form=form)
 
