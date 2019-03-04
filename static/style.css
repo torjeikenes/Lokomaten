@@ -62,10 +62,11 @@ table {
 }
 
 
-table.center {
+ table.center {
     margin-left:auto; 
     margin-right:auto;
 }
+
 
 table td, table th {
   border: 1px solid #ddd;
