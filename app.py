@@ -4,9 +4,10 @@ import sys
 import csv
 import datetime
 import operator
+import os
 
 path = '/home/lokomaten/mysite/svar.csv'
-path = '/home/torje/github/lokomat/'
+path = '/home/torje/github/lokomat/troops/'
 
 def pastWeeks(d, uke):
     weeks = {}
@@ -68,13 +69,22 @@ def writeToFile(tropp, navn,antall,forkl,dato):
         lok_writer.writerow(row)
     lok_file.close()
 
+def findTroops():
+    troops = []
+    for file in os.listdir(path):
+        troops.append(os.path.splitext(file)[0])
+    print(troops, file=sys.stdout)
+    return troops
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hemmelig'
 
 
-#@app.route('/<tropp>')
-#def index():
+@app.route('/')
+def index():
+    troops = findTroops()
+    return render_template('start.html', troops=troops)
 
 @app.route('/<tropp>')
 def tropp(tropp):

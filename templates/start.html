@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h1>Løkomaten KP4</h1>
+
+{% for t in troops %}
+<h2><a href="/{{ t }}">{{ t }}</a></h2>
+{% endfor %}
+
+
+
+{% endblock %}
