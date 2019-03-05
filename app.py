@@ -54,9 +54,11 @@ def readFile(file):
 def findTotal(d):
     total = {}
     for i in d:
+        print(i['navn'], file=sys.stdout)
         if i['navn'] in total:
             total[i['navn']] += int(i['antall'])
-        total[i['navn']] = int(i['antall'])
+        else:
+            total[i['navn']] = int(i['antall'])
     return total
 
 
