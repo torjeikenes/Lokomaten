@@ -6,7 +6,8 @@ from wtforms.validators import DataRequired
 
 class LokForm(FlaskForm):
     navn = StringField('Navn', validators=[DataRequired()])
-    lokstreker = RadioField('Løkstreker', choices=[('1','1'),('2','2'),('3','3')], validators=[DataRequired()])
+    lokstreker = RadioField('Løkstreker',
+                            choices=[('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6')], validators=[DataRequired()])
     forklaring = StringField('Forklaring', validators=[DataRequired()])
     dato = DateField('Dato', format='%Y-%m-%d', validators=[DataRequired()])
 
