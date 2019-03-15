@@ -8,7 +8,7 @@ import os
 
 
 path = '/home/lokomaten/mysite/troops/'
-path = '/home/torje/github/lokomat/troops/'
+#path = '/home/torje/github/lokomat/troops/'
 
 def pastWeeks(d, uke):
     weeks = {}
