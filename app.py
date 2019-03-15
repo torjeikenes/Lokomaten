@@ -6,8 +6,9 @@ import datetime
 import operator
 import os
 
+
 path = '/home/lokomaten/mysite/troops/'
-#path = '/home/torje/github/lokomat/troops/'
+path = '/home/torje/github/lokomat/troops/'
 
 def pastWeeks(d, uke):
     weeks = {}
@@ -19,9 +20,6 @@ def pastWeeks(d, uke):
             weeks[i] = lok
         except ValueError:
                 print("No submissions", file=sys.stdout)
-
-        #weeks[i] = lok
-
     return weeks
 
 def ukasLok(d, week):
@@ -33,8 +31,8 @@ def ukasLok(d, week):
                 ukas[i['navn']] += int(i['antall'])
             else:
                 ukas[i['navn']] = int(i['antall'])
-
     return ukas
+
 
 def ukasStreker(d, week):
     streker = []
@@ -78,6 +76,24 @@ def findTroops():
     print(troops, file=sys.stdout)
     return troops
 
+def lokTropp():
+    troops = {}
+    for file in os.listdir(path):
+        troop = os.path.splitext(file)[0]
+        data=readFile(path+file)
+        troops[troop] = 0
+        for i in data:
+            troops[troop] += int(i['antall'])
+    print(troops, file=sys.stdout)
+    return troops
+
+def topLok():
+    total = {}
+    for file in os.listdir(path):
+        troop = os.path.splitext(file)[0]
+        data=readFile(path+file)
+        total.update(findTotal(data))
+    return total
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hemmelig'
@@ -85,8 +101,10 @@ app.config['SECRET_KEY'] = 'hemmelig'
 
 @app.route('/')
 def index():
+    tropp = lokTropp()
     troops = findTroops()
-    return render_template('start.html', troops=troops)
+    lok = topLok()
+    return render_template('start.html', lok=lok, troops=troops, tropp=tropp)
 
 @app.route('/<tropp>')
 def tropp(tropp):

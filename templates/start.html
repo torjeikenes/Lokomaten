@@ -7,6 +7,38 @@
 <h2><a href="/{{ t }}">{{ t }}</a></h2>
 {% endfor %}
 
+<h3>Løkeste tropp</h3>
+
+<table id="totalt" class="center">
+  <tr>
+    <th>Tropp</th>
+    <th>Løkstreker</th>
+  </tr>
+
+{% for tr in tropp %}
+  <tr>
+    <td>{{ tr }}</th>
+    <td>{{ tropp[tr] }}</th>
+  </tr>
+{% endfor %}
+</table>
+
+<h3>Kompaniets Løk</h3>
+
+<table id="totalt" class="center">
+  <tr>
+    <th>Navn</th>
+    <th>Løkstreker</th>
+  </tr>
+
+{% for l in lok %}
+  <tr>
+    <td>{{ l }}</th>
+    <td>{{ lok[l] }}</th>
+  </tr>
+{% endfor %}
+</table>
+
 
 
 {% endblock %}
