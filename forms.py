@@ -8,7 +8,8 @@ import datetime
 class LokForm(FlaskForm):
     navn = StringField('Navn', validators=[DataRequired()])
     lokstreker = RadioField('Løkstreker',
-                            choices=[('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6')],
+                            choices=[('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('10','Superløk (10)'),('20','Megaløk (20)')],
+                            default='1',
                             validators=[DataRequired()])
     forklaring = StringField('Forklaring',
                              validators=[DataRequired()])
