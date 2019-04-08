@@ -8,7 +8,7 @@ import os
 
 
 path = '/home/lokomaten/mysite/troops/'
-#path = '/home/torje/github/lokomat/troops/'
+path = '/home/torje/github/lokomat/troops/'
 
 def pastWeeks(d, uke):
     weeks = {}
@@ -19,7 +19,7 @@ def pastWeeks(d, uke):
             lok = max(ukas, key=lambda k: ukas[k])
             weeks[i] = lok
         except ValueError:
-                print("No submissions", file=sys.stdout)
+            print("No submissions", file=sys.stdout)
     return weeks
 
 def ukasLok(d, week):
@@ -102,18 +102,23 @@ app.config['SECRET_KEY'] = 'hemmelig'
 @app.route('/')
 def index():
     tropp = lokTropp()
+    stropp = sorted(tropp.items(), reverse=True, key=operator.itemgetter(1))
     troops = findTroops()
-    lok = topLok()
-    return render_template('start.html', lok=lok, troops=troops, tropp=tropp)
+    lok =  topLok()
+    sl = sorted(lok.items(), reverse=True, key=operator.itemgetter(1))
+    return render_template('start.html', lok=sl, troops=troops, tropp=stropp)
 
 @app.route('/<tropp>')
 def tropp(tropp):
     data = readFile(path+tropp+'.csv')
     total = findTotal(data)
+    stotal = sorted(total.items(), reverse=True, key=operator.itemgetter(1))
     thisWeek = int(datetime.datetime.now().strftime("%V"))
     ukas = ukasLok(data, thisWeek)
+    sukas = sorted(ukas.items(), reverse=True, key=operator.itemgetter(1))
     past = pastWeeks(data, thisWeek)
-    return render_template('index.html', r=reversed(data), data=data, total=total, ukas=ukas, past=past, tropp=tropp)
+    return render_template('index.html', r=reversed(data), data=data,
+                           total=stotal, ukas=sukas, past=past, tropp=tropp)
 
 @app.route('/<tropp>/uke/<ukeNr>')
 def uke(tropp, ukeNr):
