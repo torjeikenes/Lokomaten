@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h1><a href="/">Løkomaten</a></h1>
+
+<h2><a href="/{{ tropp }}/submit">Send inn løkstrek</a></h2>
+<div id="loker">
+  <div id="ukas">
+
+    <h2>{{ navn }}</h2>
+    <h3>Antall Løkstreker</h3>
+
+    <h2>{{ totalt }}</h2>
+
+    </table>
+  </div>
+</div>
+
+<div id="alle">
+  <!-- <h3>Løkstreker</h3> -->
+  <table id="alt" class="center" >
+    <tr>
+      <!--<th>Navn</th>-->
+      <th>Løkstreker</th>
+      <th>forklaring</th>
+      <th>Dato</th>
+    </tr>
+  {% for line in streker %}
+  <tr>
+    <!-- <td>{{ line['navn'] }}</th> -->
+    <td>{{ line['antall'] }}</th>
+    <td>{{ line['forklaring'] }}</th>
+    <td>{{ line['dato'] }}</th>
+  </tr>
+
+  {% endfor %}
+  </table>
+</div>
+{% endblock %}

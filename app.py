@@ -7,7 +7,7 @@ import operator
 import os
 
 
-path = '/home/lokomaten/mysite/troops/'
+# path = '/home/lokomaten/mysite/troops/'
 path = '/home/torje/github/lokomat/troops/'
 
 def pastWeeks(d, uke):
@@ -21,6 +21,13 @@ def pastWeeks(d, uke):
         except ValueError:
             print("No submissions", file=sys.stdout)
     return weeks
+
+def findNavn(d,navn):
+    streker = []
+    for i in d:
+        if i['navn'] == navn:
+            streker.append(i)
+    return streker
 
 def ukasLok(d, week):
     ukas = {}
@@ -52,7 +59,7 @@ def readFile(file):
 def findTotal(d):
     total = {}
     for i in d:
-        print(i['navn'], file=sys.stdout)
+        # print(i['navn'], file=sys.stdout)
         if i['navn'] in total:
             total[i['navn']] += int(i['antall'])
         else:
@@ -73,8 +80,10 @@ def findTroops():
     troops = []
     for file in os.listdir(path):
         troops.append(os.path.splitext(file)[0])
-    print(troops, file=sys.stdout)
+    # print(troops, file=sys.stdout)
     return troops
+
+
 
 def lokTropp():
     troops = {}
@@ -84,7 +93,7 @@ def lokTropp():
         troops[troop] = 0
         for i in data:
             troops[troop] += int(i['antall'])
-    print(troops, file=sys.stdout)
+    # print(troops, file=sys.stdout)
     return troops
 
 def topLok():
@@ -119,6 +128,13 @@ def tropp(tropp):
     past = pastWeeks(data, thisWeek)
     return render_template('index.html', r=reversed(data), data=data,
                            total=stotal, ukas=sukas, past=past, tropp=tropp)
+
+@app.route('/<tropp>/<navn>')
+def navn(tropp,navn):
+    data = readFile(path+tropp+'.csv')
+    streker = findNavn(data, navn)
+    totalt = findTotal(streker)[navn]
+    return render_template('navn.html', navn=navn, streker=reversed(streker), totalt=totalt)
 
 @app.route('/<tropp>/uke/<ukeNr>')
 def uke(tropp, ukeNr):
